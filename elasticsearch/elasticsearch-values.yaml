@@ -1,0 +1,11 @@
+replicas: 2
+
+# Set custom password for Elasticsearch
+secret:
+  password: "oogha8bili3vu6kahw8reiX4ashoh2wi"
+
+# Configure volume claim template for storage
+volumeClaimTemplate:
+  resources:
+    requests:
+      storage: "100Gi"
