@@ -1,0 +1,2 @@
+elasticsearch==8.13.0
+Mastodon.py==1.8.1
