@@ -1,0 +1,23 @@
+fission package create --sourcearchive ./harvester.zip --env python --name mastodon-harvester --buildcmd ./build.sh
+
+fission fn create --name accounts-harvester --pkg mastodon-harvester --env python --entrypoint "harvester.accounts_harvester" --url /mastodon/accounts/harvester/batch/{batch} --method POST --fntimeout 18000
+
+fission fn create --name statuses-harvester --pkg mastodon-harvester --env python --entrypoint "harvester.statuses_harvester" --url /mastodon/statuses/harvester/tags/{tags}/batch/{batch} --method POST --fntimeout 18000
+
+
+
+fission package create --sourcearchive ./search.zip --env python --name mastodon-search --buildcmd ./build.sh
+
+fission fn create --name accounts-search --pkg mastodon-search --env python --entrypoint "search.accounts_search" --url /mastodon/accounts/search --method GET --fntimeout 3600
+
+fission fn create --name statuses-search --pkg mastodon-search --env python --entrypoint "search.statuses_search" --url /mastodon/statuses/search --method GET --fntimeout 3600
+
+
+
+
+fission package create --sourcearchive ./delete.zip --env python --name mastodon-delete --buildcmd ./build.sh
+
+fission fn create --name accounts-delete --pkg mastodon-delete --env python --entrypoint "delete.accounts_delete" --url /mastodon/accounts/delete --method DELETE --fntimeout 3600
+
+fission fn create --name statuses-delete --pkg mastodon-delete --env python --entrypoint "delete.statuses_delete" --url /mastodon/statuses/delete --method DELETE --fntimeout 3600
+
