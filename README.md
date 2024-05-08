@@ -41,11 +41,11 @@ Start time and end time must be in UTC format. E.g : '2024-05-08T05:00:00'
 Mastodon accounts data:
 
 ```shell
-curl -XGET http://127.0.0.1:9090/mastodon/accounts/delete
+curl -XDELETE http://127.0.0.1:9090/mastodon/accounts/delete
 ```
 
 Mastodon statuses data:
 
 ```shell
-curl -XGET http://127.0.0.1:9090/mastodon/statuses/delete
+curl -XDELETE http://127.0.0.1:9090/mastodon/statuses/delete
 ```
