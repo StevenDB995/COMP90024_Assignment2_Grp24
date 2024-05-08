@@ -5,6 +5,11 @@ import sys
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 
+###
+# This script stores data into ES from a json file containing twitter data from Melbourne.
+# The twitter data from the json file were preprocessed and extracted from the 120GB twitter file from Spartan.
+###
+
 
 def gen_data(index, chunk):
     for doc in chunk:
@@ -49,6 +54,7 @@ def main(filename):
                 pass
 
         print(f"Processing chunk #{i} ...")
+        # bulk index data into ES
         num_added, errors = bulk(es_client, gen_data("twitter_melbourne", chunk_data))
         print(f"Finished processing chunk #{i}. Docs added: {num_added}, errors occurred: {len(errors)}")
         print(f"Progress: {i+1}/{num_of_chunks} chunks indexed")
