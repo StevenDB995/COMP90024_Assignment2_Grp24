@@ -1,0 +1,14 @@
+blurhash==1.1.4
+certifi==2024.2.2
+charset-normalizer==3.3.2
+decorator==5.1.1
+elastic-transport==8.13.0
+elasticsearch==8.13.0
+geographiclib==2.0
+idna==3.7
+Mastodon.py==1.8.1
+python-dateutil==2.9.0.post0
+python-magic==0.4.27
+requests==2.31.0
+six==1.16.0
+urllib3==2.2.1
