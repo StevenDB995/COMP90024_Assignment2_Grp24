@@ -4,11 +4,6 @@ import requests
 from elasticsearch import Elasticsearch, BadRequestError
 
 
-def write_json(data, name):
-    with open('Download/' + name + '.json', 'a+') as f:
-        json.dump(data, f, indent=4)
-
-
 def create_client():
     es_client = Elasticsearch(
         hosts="https://elasticsearch-master.elastic.svc.cluster.local:9200",
@@ -18,23 +13,11 @@ def create_client():
     return es_client
 
 
-def send_request(url, params):
-    req = requests.get(url, params=params)
-    try:
-        toots = json.loads(req.text)
-        return toots
-    except json.decoder.JSONDecodeError:
-        print(req.status_code)
-
-
-def gather_user_info(host, user_id):
+def gather_user_info(user):
     wanted_keys = ['username', 'created_at', "followers_count", "following_count", "statuses_count", "last_status_at"]
-    url = host + f'/api/v1/accounts/{user_id}'
-    params = {'limit': 80}
-    user_details = send_request(url, params)
     user_info = dict()
     for k in wanted_keys:
-        user_info[k] = user_details[k]
+        user_info[k] = user[k]
     return user_info
 
 
@@ -124,7 +107,7 @@ def extract_accounts_info(host, api, params, batch_size):
             user_id = toot["account"]["id"]
             if es_client.exists(index=index, id=user_id):
                 continue
-            user_info = gather_user_info(host, user_id)
+            user_info = gather_user_info(toot["account"])
             es_client.index(index=index, id=user_id, document=user_info)
 
         max_id = toots[-1]['id']
