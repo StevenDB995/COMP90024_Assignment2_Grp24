@@ -1,8 +1,10 @@
 fission package create --sourcearchive ./harvester.zip --env python --name mastodon-harvester --buildcmd ./build.sh
 
-fission fn create --name accounts-harvester --pkg mastodon-harvester --env python --entrypoint "harvester.accounts_harvester" --url /mastodon/accounts/harvester/batch/{batch} --method POST --fntimeout 18000
+fission fn create --name accounts-harvester --pkg mastodon-harvester --env python --entrypoint "harvester.accounts_harvester" --url /mastodon/accounts/harvester/batch/{batch} --method POST --fntimeout 86400
 
-fission fn create --name statuses-harvester --pkg mastodon-harvester --env python --entrypoint "harvester.statuses_harvester" --url /mastodon/statuses/harvester/tags/{tags}/batch/{batch} --method POST --fntimeout 18000
+fission fn create --name statuses-harvester-public --pkg mastodon-harvester --env python --entrypoint "harvester.statuses_harvester_public" --url /mastodon/statuses/harvester/public/batch/{batch} --method POST --fntimeout 86400
+
+fission fn create --name statuses-harvester-tags --pkg mastodon-harvester --env python --entrypoint "harvester.statuses_harvester_tags" --url /mastodon/statuses/harvester/tags/{tags}/batch/{batch} --method POST --fntimeout 86400
 
 
 
@@ -10,7 +12,9 @@ fission package create --sourcearchive ./search.zip --env python --name mastodon
 
 fission fn create --name accounts-search --pkg mastodon-search --env python --entrypoint "search.accounts_search" --url /mastodon/accounts/search --method GET --fntimeout 3600
 
-fission fn create --name statuses-search --pkg mastodon-search --env python --entrypoint "search.statuses_search" --url /mastodon/statuses/search --method GET --fntimeout 3600
+fission fn create --name statuses-search-public --pkg mastodon-search --env python --entrypoint "search.statuses_search_public" --url /mastodon/statuses/search/public --method GET --fntimeout 3600
+
+fission fn create --name statuses-search-tags --pkg mastodon-search --env python --entrypoint "search.statuses_search_tags" --url /mastodon/statuses/search/tags/{tags} --method GET --fntimeout 3600
 
 
 

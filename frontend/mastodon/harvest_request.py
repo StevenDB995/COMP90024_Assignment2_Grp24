@@ -16,4 +16,5 @@ def harvest_accounts(batch_size):
 
 
 if __name__ == '__main__':
-    harvest_accounts(100 * 12000)
+    # harvest_statuses("DomesticViolence", 100 * 12500)
+    harvest_accounts(100 * 12500)

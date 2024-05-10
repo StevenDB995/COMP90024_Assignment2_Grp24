@@ -14,13 +14,25 @@ def create_client():
     return es_client
 
 
-def data_search(index):
+def data_search(index, has_tags=False):
     disable_warnings(exceptions.InsecureRequestWarning)
     start_time = request.args.get("start")
     end_time = request.args.get("end")
+    term_query = []
+    if has_tags:
+        tags = request.headers.get("X-Fission-Params-Tags")
+        if tags is None:
+            return {"status": "failed", "data": {}, "message": "Incorrect URL"}
+        tags = tags.lower().split('&')
+        for tag in tags:
+            term_query.append({"term": {"tags": tag}})
     query = {
         "query": {
-            "range": {'created_at': {"gte": start_time, "lte": end_time}}
+            "bool": {
+                "filter": [
+                    {"range": {'created_at': {"gte": start_time, "lte": end_time}}}
+                ] + term_query
+            }
         }
     }
     client = create_client()
@@ -40,5 +52,9 @@ def accounts_search():
     return data_search('mastodon_accounts')
 
 
-def statuses_search():
+def statuses_search_public():
     return data_search('mastodon_statuses')
+
+
+def statuses_search_tags():
+    return data_search('mastodon_statuses', has_tags=True)
