@@ -7,22 +7,18 @@
 Mastodon accounts data:
 
 ```shell
-curl -XPOST http://127.0.0.1:9090/mastodon/accounts/harvester/batch/{batch_num}
-```
-
-Mastodon statuses data:
-
-```shell
-curl -XPOST http://127.0.0.1:9090/mastodon/statuses/harvester/public/batch/{batch_num}
+curl -H "Content-Type:application/json" --data '{"batch": {batch_num}, "max_id": {max_id}}' -XPOST http://127.0.0.1:9090/mastodon/accounts/harvester
 ```
 
 ```shell
-curl -XPOST http://127.0.0.1:9090/mastodon/statuses/harvester/tags/{tags}/batch/{batch_num}
+curl -H "Content-Type:application/json" --data '{"batch": {batch_num}, "tags": {tags}, "max_id": {max_id}}' -XPOST http://127.0.0.1:9090/mastodon/statuses/harvester
 ```
 
 batch_num : The number of batches that the program harvests data from. 40 statuses are retrieved in each batch.
 
 tags: Limit the harvested statuses tags. E.g: DomesticViolence, DomesticViolence&Female (multi-tags support)
+
+max_id: All results returned will be lesser than this ID. In effect, sets an upper bound on results.
 
 ### Search Data
 

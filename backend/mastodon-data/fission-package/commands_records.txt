@@ -1,10 +1,8 @@
 fission package create --sourcearchive ./harvester.zip --env python --name mastodon-harvester --buildcmd ./build.sh
 
-fission fn create --name accounts-harvester --pkg mastodon-harvester --env python --entrypoint "harvester.accounts_harvester" --url /mastodon/accounts/harvester/batch/{batch} --method POST --fntimeout 86400
+fission fn create --name accounts-harvester --pkg mastodon-harvester --env python --entrypoint "harvester.accounts_harvester" --url /mastodon/accounts/harvester --method POST --fntimeout 86400
 
-fission fn create --name statuses-harvester-public --pkg mastodon-harvester --env python --entrypoint "harvester.statuses_harvester_public" --url /mastodon/statuses/harvester/public/batch/{batch} --method POST --fntimeout 86400
-
-fission fn create --name statuses-harvester-tags --pkg mastodon-harvester --env python --entrypoint "harvester.statuses_harvester_tags" --url /mastodon/statuses/harvester/tags/{tags}/batch/{batch} --method POST --fntimeout 86400
+fission fn create --name statuses-harvester --pkg mastodon-harvester --env python --entrypoint "harvester.statuses_harvester" --url /mastodon/statuses/harvester --method POST --fntimeout 86400
 
 
 

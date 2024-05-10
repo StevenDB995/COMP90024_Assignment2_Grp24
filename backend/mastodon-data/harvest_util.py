@@ -54,8 +54,8 @@ def statuses_process(toots, es_client, index):
         es_client.index(index=index, id=toot["id"], document=toot_process)
 
 
-def timeline_search(host, tags, index, batch_size):
-    params = {'limit': 40}
+def timeline_search(host, tags, index, batch_size, max_id):
+    params = {'limit': 40, 'max_id': max_id}
     if tags:
         hashtag = tags[0]
         api = f'/api/v1/timelines/tag/{hashtag}'
