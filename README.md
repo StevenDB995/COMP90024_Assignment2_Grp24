@@ -13,6 +13,10 @@ curl -XPOST http://127.0.0.1:9090/mastodon/accounts/harvester/batch/{batch_num}
 Mastodon statuses data:
 
 ```shell
+curl -XPOST http://127.0.0.1:9090/mastodon/statuses/harvester/public/batch/{batch_num}
+```
+
+```shell
 curl -XPOST http://127.0.0.1:9090/mastodon/statuses/harvester/tags/{tags}/batch/{batch_num}
 ```
 
@@ -29,6 +33,10 @@ curl -XGET http://127.0.0.1:9090/mastodon/accounts/search?start={start_time}&end
 ```
 
 Mastodon statuses data:
+
+```shell
+curl -XGET http://127.0.0.1:9090/mastodon/statuses/search/public?start={start_time}&end={end_time}
+```
 
 ```shell
 curl -XGET http://127.0.0.1:9090/mastodon/statuses/search/tags/{tags}?start={start_time}&end={end_time}
