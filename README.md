@@ -7,12 +7,15 @@
 #### Harvester:
 
 ```shell
-curl -H "Content-Type:application/json" --data '{"batch": {batch_num}, "max_id": {max_id}}' -XPOST http://127.0.0.1:9090/mastodon/accounts/harvester
+curl -H "Content-Type:application/json" \
+  --data '{"batch": {batch_num}, "max_id": {max_id}}' \
+  -XPOST http://127.0.0.1:9090/mastodon/accounts/harvester
 ```
 
 batch_num : The number of batches that the program harvests data from. 40 statuses are retrieved in each batch.
 
 max_id: All results returned will be lesser than this ID. In effect, sets an upper bound on results.
+
 
 #### Search:
 
@@ -21,8 +24,11 @@ curl -XGET http://127.0.0.1:9090/mastodon/accounts/search/field{field}/gte={gte_
 ```
 
 gte stands for "greater than or equal to"
+
 lte stands for "less than or equal to." 
+
 It filter the mastodon data within the specified field range.
+
 
 #### Delete:
 
@@ -30,12 +36,15 @@ It filter the mastodon data within the specified field range.
 curl -XDELETE http://127.0.0.1:9090/mastodon/accounts/delete
 ```
 
+
 ### Mastodon Statuses Data
 
 #### Harvester:
 
 ```shell
-curl -H "Content-Type:application/json" --data '{"batch": {batch_num}, "tags": {tags}, "max_id": {max_id}}' -XPOST http://127.0.0.1:9090/mastodon/statuses/harvester
+curl -H "Content-Type:application/json" \
+  --data '{"batch": {batch_num}, "tags": {tags}, "max_id": {max_id}}' \
+  -XPOST http://127.0.0.1:9090/mastodon/statuses/harvester
 ```
 
 batch_num : The number of batches that the program harvests data from. 40 statuses are retrieved in each batch.
@@ -43,6 +52,7 @@ batch_num : The number of batches that the program harvests data from. 40 status
 tags: Limit the harvested statuses tags. E.g: DomesticViolence, DomesticViolence&Female (multi-tags support)
 
 max_id: All results returned will be lesser than this ID. In effect, sets an upper bound on results.
+
 
 #### Search:
 
@@ -57,8 +67,11 @@ curl -XGET http://127.0.0.1:9090/mastodon/statuses/search/public/field{field}/gt
 tags: Limit the statuses tags when searching. E.g: DomesticViolence, DomesticViolence&Female (multi-tags support)
 
 gte stands for "greater than or equal to"
+
 lte stands for "less than or equal to." 
+
 It filter the mastodon data within the specified field range.
+
 
 #### Delete:
 
