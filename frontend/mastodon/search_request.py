@@ -1,16 +1,23 @@
 import requests
 
 
-def search_accounts(start_time, end_time):
-    url = f'http://127.0.0.1:9090/mastodon/accounts/search'
-    params = {"start": start_time, "end": end_time}
+def search_accounts(field, gte, lte):
+    url = f'http://127.0.0.1:9090/mastodon/accounts/search/field/{field}'
+    params = {"gte": gte, "lte": lte}
     r = requests.get(url, params=params)
     print(r.text)
 
 
-def search_statuses(tags, start_time, end_time):
-    url = f'http://127.0.0.1:9090/mastodon/statuses/search/tags/{tags}'
-    params = {"start": start_time, "end": end_time}
+def search_statuses_tags(tags, field, gte, lte):
+    url = f'http://127.0.0.1:9090/mastodon/statuses/search/tags/{tags}/field/{field}'
+    params = {"gte": gte, "lte": lte}
+    r = requests.get(url, params=params)
+    print(r.text)
+
+
+def search_statuses_public(field, gte, lte):
+    url = f'http://127.0.0.1:9090/mastodon/statuses/search/public/field/{field}'
+    params = {"gte": gte, "lte": lte}
     r = requests.get(url, params=params)
     print(r.text)
 
@@ -29,7 +36,7 @@ def delete_statuses():
 
 if __name__ == '__main__':
     start_date = '2024-01-01'
-    end_date = "2024-01-08"
+    end_date = "2024-01-02"
     # tags_string = 'DomesticViolence&crime'
     tags_string = 'DomesticViolence'
-    search_accounts(start_date, end_date)
+    search_statuses_tags(tags_string, "created_at", start_date, end_date)

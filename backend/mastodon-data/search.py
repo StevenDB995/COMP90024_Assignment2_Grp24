@@ -16,8 +16,9 @@ def create_client():
 
 def data_search(index, has_tags=False):
     disable_warnings(exceptions.InsecureRequestWarning)
-    start_time = request.args.get("start")
-    end_time = request.args.get("end")
+    field = request.headers.get("X-Fission-Params-Field")
+    gte = request.args.get("gte")
+    lte = request.args.get("lte")
     term_query = []
     if has_tags:
         tags = request.headers.get("X-Fission-Params-Tags")
@@ -30,7 +31,7 @@ def data_search(index, has_tags=False):
         "query": {
             "bool": {
                 "filter": [
-                    {"range": {'created_at': {"gte": start_time, "lte": end_time}}}
+                    {"range": {field: {"gte": gte, "lte": lte}}}
                 ] + term_query
             }
         }
@@ -45,7 +46,7 @@ def data_search(index, has_tags=False):
     except elasticsearch.NotFoundError:
         return {"status": "failed", "data": {}, "message": "There is no that mastodon data yet"}
     except elasticsearch.BadRequestError:
-        return {"status": "failed", "data": {}, "message": "The start or end time are not in UTC format"}
+        return {"status": "failed", "data": {}, "message": "Incorrect gte or lte parameters format"}
 
 
 def accounts_search():
