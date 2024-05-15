@@ -20,7 +20,7 @@ max_id: All results returned will be lesser than this ID. In effect, sets an upp
 #### Search:
 
 ```shell
-curl -XGET http://127.0.0.1:9090/mastodon/accounts/search/field{field}/gte={gte_value}&lte={lte_value}
+curl -XGET http://127.0.0.1:9090/mastodon/accounts/search/field/{field}?gte={gte_value}&lte={lte_value}
 ```
 
 gte stands for "greater than or equal to"
@@ -57,11 +57,11 @@ max_id: All results returned will be lesser than this ID. In effect, sets an upp
 #### Search:
 
 ```shell
-curl -XGET http://127.0.0.1:9090/mastodon/statuses/search/tags/{tags}/field{field}/gte={gte_value}&lte={lte_value}
+curl -XGET http://127.0.0.1:9090/mastodon/statuses/search/tags/{tags}/field/{field}?gte={gte_value}&lte={lte_value}
 ```
 
 ```shell
-curl -XGET http://127.0.0.1:9090/mastodon/statuses/search/public/field{field}/gte={gte_value}&lte={lte_value}
+curl -XGET http://127.0.0.1:9090/mastodon/statuses/search/public/field/{field}?gte={gte_value}&lte={lte_value}
 ```
 
 tags: Limit the statuses tags when searching. E.g: DomesticViolence, DomesticViolence&Female (multi-tags support)
@@ -86,5 +86,5 @@ curl -XDELETE http://127.0.0.1:9090/mastodon/statuses/delete
 #### Search
 
 ```shell
-curl -XGET http://127.0.0.1:9090/mastodon/sudo/violence/search
+curl -XGET http://127.0.0.1:9090/sudo/violence/search
 ```
