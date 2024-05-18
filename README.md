@@ -33,7 +33,7 @@ It filter the mastodon data within the specified field range.
 #### Delete:
 
 ```shell
-curl -XDELETE http://127.0.0.1:9090/mastodon/accounts/delete
+curl -XDELETE http://127.0.0.1:9090/mastodon/accounts
 ```
 
 
@@ -76,7 +76,7 @@ It filter the mastodon data within the specified field range.
 #### Delete:
 
 ```shell
-curl -XDELETE http://127.0.0.1:9090/mastodon/statuses/delete
+curl -XDELETE http://127.0.0.1:9090/mastodon/statuses
 ```
 
 ## Sudo Data
@@ -87,4 +87,24 @@ curl -XDELETE http://127.0.0.1:9090/mastodon/statuses/delete
 
 ```shell
 curl -XGET http://127.0.0.1:9090/sudo/violence/search
+```
+
+## Twitter Data
+
+#### Search
+
+```shell
+curl -XGET http://127.0.0.1:9090/twitter/search/field/{field}?gte={gte_value}&lte={lte_value}
+```
+
+gte stands for "greater than or equal to"
+
+lte stands for "less than or equal to." 
+
+It filter the mastodon data within the specified field range.
+
+#### Delete:
+
+```shell
+curl -XDELETE http://127.0.0.1:9090/twitter
 ```
