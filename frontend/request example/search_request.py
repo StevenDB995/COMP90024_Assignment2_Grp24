@@ -22,6 +22,20 @@ def search_statuses_public(field, gte, lte):
     print(r.text)
 
 
+def search_twitter(field, gte, lte):
+    url = f'http://127.0.0.1:9090/twitter/search/field/{field}'
+    params = {"gte": gte, "lte": lte}
+    r = requests.get(url, params=params)
+    print(r.text)
+
+
+def search_bom(field, gte, lte):
+    url = f'http://127.0.0.1:9090/bom/search/field/{field}'
+    params = {"gte": gte, "lte": lte}
+    r = requests.get(url, params=params)
+    print(r.text)
+
+
 def delete_accounts():
     url = f'http://127.0.0.1:9090/mastodon/accounts/delete'
     r = requests.delete(url)
@@ -35,8 +49,8 @@ def delete_statuses():
 
 
 if __name__ == '__main__':
-    start_date = '2024-01-01'
-    end_date = "2024-01-02"
-    # tags_string = 'DomesticViolence&crime'
-    tags_string = 'DomesticViolence'
-    search_statuses_tags(tags_string, "created_at", start_date, end_date)
+    # start_date = '2024-01-01'
+    # end_date = "2024-01-02"
+    # tags_string = 'DomesticViolence'
+    # search_statuses_tags(tags_string, "created_at", start_date, end_date)
+    search_bom('Date', '2022-06-01', '2024-07-01')
