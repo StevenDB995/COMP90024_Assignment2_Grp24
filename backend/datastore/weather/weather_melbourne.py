@@ -41,7 +41,7 @@ def parse_and_upload_csv(csv_content):
 
 def fetch_and_process_csv():
     for year in range(2023, 2025):
-        for month in (range(6, 13) if year == 2023 else range(1, 5) if year == 2024 else []):
+        for month in (range(6, 13) if year == 2023 else range(1, 6) if year == 2024 else []):
             url = f"https://reg.bom.gov.au/climate/dwo/{year}{month:02d}/text/IDCJDW3050.{year}{month:02d}.csv"
             response = requests.get(url)
             if response.status_code == 200:
@@ -49,3 +49,5 @@ def fetch_and_process_csv():
             else:
                 print(f"Failed to fetch data from {url}, status code: {response.status_code}")
 
+if __name__ == "__main__":
+    fetch_and_process_csv()
