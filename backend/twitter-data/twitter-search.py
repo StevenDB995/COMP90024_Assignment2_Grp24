@@ -14,7 +14,7 @@ def create_client():
     return es_client
 
 
-def data_search(index):
+def data_search(index, analytic):
     disable_warnings(exceptions.InsecureRequestWarning)
     field = request.headers.get("X-Fission-Params-Field")
     gte = request.args.get("gte")
@@ -32,15 +32,31 @@ def data_search(index):
     client = create_client()
     try:
         result = scan(client=client, index=index, query=query, scroll="1h")
-        data = []
-        for resp in result:
-            data.append(resp["_source"])
+        data = analytic(result)
         return {"status": "success", "data": data, "message": None}
     except elasticsearch.NotFoundError:
-        return {"status": "failed", "data": {}, "message": "There is no that mastodon data yet"}
+        return {"status": "failed", "data": {}, "message": "There is no that data yet"}
     except elasticsearch.BadRequestError:
         return {"status": "failed", "data": {}, "message": "Incorrect gte or lte parameters format"}
 
 
+def all_data(result):
+    data = []
+    for resp in result:
+        data.append(resp["_source"])
+    return data
+
+
+def average_sentiment(result):
+    data = []
+    for resp in result:
+        data.append(resp["_source"]['sentiment'])
+    return sum(data)/len(data)
+
+
 def twitter_search():
-    return data_search('twitter_melbourne')
+    return data_search('twitter_melbourne', all_data)
+
+
+def twitter_search_sentiment():
+    return data_search('twitter_melbourne', average_sentiment)

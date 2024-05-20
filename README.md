@@ -94,14 +94,16 @@ curl -XGET http://127.0.0.1:9090/sudo/violence/search
 #### Search
 
 ```shell
-curl -XGET http://127.0.0.1:9090/twitter/search/field/{field}?gte={gte_value}&lte={lte_value}
+curl -XGET http://127.0.0.1:9090/twitter/search/data/field/{field}?gte={gte_value}&lte={lte_value}
 ```
 
-gte stands for "greater than or equal to"
+Returns all tweets whose field values ​​are within the specific range [gte_value, lte_value]
 
-lte stands for "less than or equal to." 
+```shell
+curl -XGET http://127.0.0.1:9090/twitter/search/sentiment/average/field/{field}?gte={gte_value}&lte={lte_value}
+```
 
-It filter the mastodon data within the specified field range.
+Calculate the average sentiment score of tweets whose field values ​​are within the specific range [gte_value, lte_value]
 
 #### Delete:
 
@@ -117,8 +119,4 @@ curl -XDELETE http://127.0.0.1:9090/twitter
 curl -XGET http://127.0.0.1:9090/bom/search/field/{field}?gte={gte_value}&lte={lte_value}
 ```
 
-gte stands for "greater than or equal to"
-
-lte stands for "less than or equal to." 
-
-It filter the mastodon data within the specified field range.
+Returns all BOM data whose field values ​​are within the specific range [gte_value, lte_value]
