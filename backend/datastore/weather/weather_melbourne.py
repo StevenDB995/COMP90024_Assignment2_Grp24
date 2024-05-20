@@ -1,28 +1,51 @@
+import requests
 from elasticsearch import Elasticsearch
-import json
+import csv
+from io import StringIO
+from datetime import datetime
 
-# Elasticsearch 客户端
+# Elasticsearch setup
 es_client = Elasticsearch(
     "https://localhost:9200",
     verify_certs=False,
     basic_auth=("elastic", "elastic")
 )
 
-# 读取 JSON 数据并存入 Elasticsearch
-def index_data(data):
-    for record in data:
-        es_client.index(index="weather_melbourne", body=record)
+def upload_to_elasticsearch(data):
+    for entry in data:
+        es_client.index(index="weather_melbourne", document=entry)
 
-# 从大型 JSON 文件中逐批读取数据并存入 Elasticsearch
-def process_large_json(json_file, batch_size=1000):
-    with open(json_file) as f:
-        data = json.load(f)
-        total_records = len(data)
-        batches = [data[i:i+batch_size] for i in range(0, total_records, batch_size)]
-        for batch_num, batch in enumerate(batches):
-            index_data(batch)
-            print(f"Batch {batch_num+1}/{len(batches)} processed.")
+def parse_and_upload_csv(csv_content):
+    f = StringIO(csv_content)
+    reader = csv.reader(f)
+    headers = next(reader)  # First, read the first line which could be a header
+    while "Date" not in headers:  # Check if 'Date' is in the header
+        headers = next(reader)  # If not, keep reading until we find the correct headers
+    # Create a DictReader starting from the current point
+    dict_reader = csv.DictReader(f, fieldnames=headers, restval=None)
+    data = []
+    for row in dict_reader:
+        formatted_date = datetime.strptime(row["Date"], "%Y-%m-%d").strftime("%Y-%m-%d")
+        try:
+            wind_speed = int(row["Speed of maximum wind gust (km/h)"])
+        except ValueError:
+            wind_speed = 0  # Default value if the conversion fails
+        doc = {
+            "Date": formatted_date,
+            "Rainfall (mm)": float(row["Rainfall (mm)"]),
+            "Sunshine (hours)": float(row["Sunshine (hours)"]),
+            "Speed of maximum wind gust (km/h)": wind_speed
+        }
+        data.append(doc)
+    upload_to_elasticsearch(data)
 
-# 指定 JSON 文件路径并调用函数
-json_file_path = "WeatherObservations.json"
-process_large_json(json_file_path)
+def fetch_and_process_csv():
+    for year in range(2023, 2025):
+        for month in (range(6, 13) if year == 2023 else range(1, 5) if year == 2024 else []):
+            url = f"https://reg.bom.gov.au/climate/dwo/{year}{month:02d}/text/IDCJDW3050.{year}{month:02d}.csv"
+            response = requests.get(url)
+            if response.status_code == 200:
+                parse_and_upload_csv(response.text)
+            else:
+                print(f"Failed to fetch data from {url}, status code: {response.status_code}")
+
